@@ -1,0 +1,54 @@
+<h1 class="index-title">New contacts</h1>
+<div class="ui centered grid">
+  <%= form_for @file_contact, url: file_contacts_path do |f| %>
+    <% headers = [[1, 0], [2, 1], [3, 2], [4, 3], [5, 4], [6, 5]] %>
+    <p>Select the column where is each field in your CSV file: </p>
+    <div class="ui centered grid">
+      <table class="ui very basic collapsing celled table index-table">
+        <thead>
+          <tr>
+            <th scope="col">Column</th>
+            <th scope="col">Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th> <%= label_tag 'name', 'Name' %> </th>
+            <th> <%= select_tag(:name, options_for_select(headers, 0)) %> </th>
+          </tr>
+          <tr>
+            <th><%= label_tag 'dayOfBirth', 'Date of birth' %></th>
+            <th><%= select_tag(:dayOfBirth, options_for_select(headers, 1)) %></th>
+          </tr>
+          <tr>
+            <th><%= label_tag 'phone', 'Phone' %></th>
+            <th><%= select_tag(:phone, options_for_select(headers, 2)) %></th>
+          </tr>
+          <tr>
+            <th><%= label_tag 'address', 'Address' %></th>
+            <th><%= select_tag(:address, options_for_select(headers, 3)) %></th>
+          </tr>
+          <tr>
+            <th><%= label_tag 'card', 'Card number' %></th>
+            <th><%= select_tag(:card, options_for_select(headers, 4)) %></th>
+          </tr>
+          <tr>
+            <th><%= label_tag 'email', 'Email' %></th>
+            <th><%= select_tag(:email, options_for_select(headers, 5)) %></th>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    <div class="ui centered grid">
+      <%= f.label :file, "Load CSV file" %>
+      <%= f.file_field :file, class: 'form-control-file', required: true %>
+      <br>
+      <%= f.button "Import contacts", type: 'submit',  class: "positive ui button" %>
+    </div>
+  <% end %>
+
+</div>
+  
+
+
+

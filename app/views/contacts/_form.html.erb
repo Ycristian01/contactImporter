@@ -1,0 +1,69 @@
+<h1>This is the contact form</h1>
+
+<div class="ui centered grid">
+  <div>
+    <%= form_with model: @contact do |form| %>
+      <% if @contact.errors.any? %>
+      <div id="error_explanation">
+        <h2 class="red ui header"><%= pluralize(@contact.errors.count, "error") %> prohibited this contact from being saved:</h2>
+
+        <div class="ui list">
+          <% @contact.errors.each do |error| %>
+            <div class="item">
+              <i class="red times circle icon"></i>
+              <%= error.full_message %>
+            </div>
+          <% end %>
+        </div>
+        
+      </div>
+      <% end %>
+      <div class="ui form">
+        <h4 class="ui dividing header">contact information</h4>
+
+        <div class="field">
+          <label>Name</label>
+          <div class="three fields">
+            <div class="field">
+              <%= form.text_field :name, placeholder:"First name" %>
+            </div>
+            <div class="field">
+              <%= form.text_field :address, placeholder:"Address" %>
+            </div>
+            <div class="field">
+              <%= form.text_field :dayOfBirth, placeholder:"Birth day" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          
+          <div class="two fields">
+            <div class="field">
+              <label>Phone</label>
+              <%= form.text_field :phone, placeholder:"Phone number" %>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <%= form.text_field :email, placeholder:"contact@example.com" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="fields">
+        
+          <div class="seven wide field">
+            <label>Card number</label>
+            <%= form.text_field :card, placeholder:"card number" %>
+          </div>
+          
+        <div>   
+      </div>
+
+      <div class="actions">
+        <%= form.submit class:"ui primary button"%>
+      </div>
+      
+    <% end %>
+  </div>
+</div>

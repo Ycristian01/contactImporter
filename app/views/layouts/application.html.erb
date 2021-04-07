@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ContactImporter</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <div class="ui secondary  menu">
+      <%if user_signed_in? %>
+        <a class="item">
+          <%=link_to 'Contacts list', contacts_path, method: :get %>
+        </a>
+        <a class="item">
+          <%=link_to 'Imported files list', file_contacts_path, method: :get %>
+        </a>
+        <a class="item">
+          <%=link_to 'Failed files list', failed_contacts_path, method: :get %>
+        </a>
+        <div class="right menu">
+          <a class="ui item">
+            <%=link_to current_user.email, current_user %>
+          </a>
+          <a class="ui item">
+            <%=link_to 'Log out', destroy_user_session_path, method: :delete %>
+          </a>      
+        </div>
+        <%else%>
+          <div class="right menu">
+            <a class="ui item">
+              <%=link_to 'Log in', new_user_session_path %>
+            </a>
+            <a class="ui item">
+              <%=link_to 'Sign up', new_user_registration_path %>
+            </a>
+              
+          </div>
+      <%end%>
+    </div>
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>
