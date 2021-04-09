@@ -5,6 +5,10 @@ class ContactsController < ApplicationController
   def show
   end
 
+  def index
+    @contact = Contact.all
+  end
+
   def new
    @contact = @user.contacts.new 
   end
@@ -16,10 +20,10 @@ class ContactsController < ApplicationController
     @contact = @user.contacts.create(contact_params)
  
      if @contact.save
-       redirect_to user_contact_path @user , @contact
+       redirect_to user_contacts_path @user
        flash[:notice] = "Contact was successfully created"
      else
-       render 'new'
+       render 'users#index'
      end
    end
 

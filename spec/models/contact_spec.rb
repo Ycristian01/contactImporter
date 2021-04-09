@@ -1,39 +1,44 @@
 require 'rails_helper'
 
 RSpec.describe Contact, type: :model do
-   
+  
+  it "is valid with valid attributes" do
+    contact = build(:contact)
+    expect(contact).to be_valid
+  end
+
   it "tests contact name" do
     contact = build(:contact)
-    expect(contact.name).to eq('Cristian - Yepes')
+    contact.name = "Cristian-Yepes*"
+    expect(contact).to_not be_valid
   end
 
   it "tests contact day of birth" do
     contact = build(:contact)
-    expect(contact.dayOfBirth).to eq('1998-10-01')
+    contact.dayOfBirth = '1998-100-01'
+    expect(contact).to_not be_valid
   end
 
   it "tests contact phone" do
     contact = build(:contact)
-    expect(contact.phone).to eq(3468976753)
+    contact.phone = "numero"
+    expect(contact).to_not be_valid
   end
   
-  it "tests contact address" do
-    contact = build(:contact)
-    expect(contact.address).to eq('Street 7 #17-90')
-  end
-
   it "tests contact card" do
     contact = build(:contact)
-    expect(contact.card).to eq('5889765490826453')
+    contact.card = "58876898767card"
+    expect(contact).to_not be_valid
   end
 
   it "tests contact franchise" do
     contact = build(:contact)
-    expect(contact.franchise).to eq('Mastercard')
+    contact.franchise = 1234
+    expect(contact).to_not be_valid
   end
   
-  it "tests contact email" do
-    contact = build(:contact)
-    expect(contact.email).to eq('examplecontact7@example.com')
-  end
+  # it "tests contact email" do
+  #   contact = build(:contact)
+  #   expect(contact.email).to eq('examplecontact7@example.com')
+  # end
 end
