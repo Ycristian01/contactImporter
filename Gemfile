@@ -21,6 +21,7 @@ gem 'devise'
 gem 'rexml', '~> 3.2', '>= 3.2.5'
 gem 'semantic-ui-sass'
 gem 'jquery-rails'
+gem 'credit_card_detector'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password

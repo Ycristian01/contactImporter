@@ -1,0 +1,2 @@
+class FailedContact < ApplicationRecord
+end
