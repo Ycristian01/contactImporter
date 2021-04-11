@@ -3,16 +3,10 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    
-
-    # respond_to do |format|
-    #   format.html
-    #   format.csv { send_data @contacts.to_csv, filename: "contacts -#{Date.today}.csv" }
-    # end
   end
 
   def show
-    @contacts = @user.contacts
+    @contacts = current_user.contacts
   end
 
   def edit

@@ -1,16 +1,27 @@
 class ContactsController < ApplicationController
-  before_action :set_user
   before_action :set_contact, only: %i[ show edit update destroy ]
+
+  
+
+  def index
+    @contacts = Contact.all
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @contacts.to_csv, filename: "contacts -#{Date.today}.csv" }
+    end
+  end
+
+  def import 
+    Employee.import(params[:file])
+    redirect_to root_url, notice: "contacts imported"
+  end
 
   def show
   end
 
-  def index
-    @contact = Contact.all
-  end
-
   def new
-   @contact = @user.contacts.new 
+   @contact = current_user.contacts.new 
   end
 
   def edit
@@ -44,13 +55,9 @@ class ContactsController < ApplicationController
   end
 
   private
-
-    def set_user
-      @user = User.find(params[:user_id])
-    end
-      
+    
     def set_contact
-      @contact = @user.contacts.find(params[:id]) 
+      @contact = current_user.contacts.find(params[:id]) 
     end
 
     def contact_params

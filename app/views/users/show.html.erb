@@ -3,7 +3,8 @@
 <%if user_signed_in? %>
   <h5>You are <%=current_user.email%></h5>
   <%=link_to 'Log out', destroy_user_session_path, method: :delete %>
-  <%=link_to 'Current user', current_user, method: :get %>
+  <%=link_to 'add contact', new_contact_path, method: :get %>
+  <%=link_to 'contact index', contacts_path, method: :get %>
   <%else%>
     <%=link_to 'Log in', new_user_session_path %>
     <%=link_to 'Sign up', new_user_registration_path %>
