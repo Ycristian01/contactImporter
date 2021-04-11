@@ -13,8 +13,7 @@ class Contact < ApplicationRecord
   validates :phone, format: { with: /\(([+][0-9]{1,2})\)([ .-]?)([0-9]{3})(\s|-)([0-9]{3})(\s|-)([0-9]{2})(\s|-)([0-9]{2})/, message: 'Invalid phone number' }, presence: true
   validates :card, numericality: { only_integer: true,
     message: "only allows numbers" }
-  validates :franchise, format: { with: /\A[a-zA-Z]+\z/,
-    message: "only allows letters" }
+  validates :franchise, format: { with:  /\A[a-zA-Z0-9 ]+\z/ }
 
   validates_each :dayOfBirth do |record, attribute, value|
     begin
@@ -24,16 +23,16 @@ class Contact < ApplicationRecord
     end
   end
 
-  validate :validate_card
-  before_save :save_card
+  # validate :validate_card
+  # before_save :save_card
 
   private
 
-  def validate_credit_card
-    self[:card] = detect_franchise
-    self[:last_four_numbers] = take_last_four_credit_card_numbers
-    errors.add(:card, 'Invalid credit card') if franchise.nil?
-  end
+  # def validate_credit_card
+  #   self[:card] = detect_franchise
+  #   self[:last_four_numbers] = take_last_four_credit_card_numbers
+  #   errors.add(:card, 'Invalid credit card') if franchise.nil?
+  # end
 
 def self.to_csv
     attributes = %w{name dayOfBirth phone address card franchise email }
@@ -52,7 +51,7 @@ def self.to_csv
     CSV.foreach(file.path, headers: true) do |row|
       contact_hash = row.to_hash
       contact = find_or_create_by!(name: contact_hash['name'], dayOfBirth: contact_hash['dayOfBirth'], phone: contact_hash['phone'],
-        address: contact_hash['address'], card: contact_hash['cad'], franchise: contact_hash['franchise'], email: contact_hash['email'])
+        address: contact_hash['address'], card: contact_hash['card'], franchise: contact_hash['franchise'], email: contact_hash['email'])
       contact.update(contact_hash)
     end
   end
