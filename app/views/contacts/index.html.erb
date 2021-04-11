@@ -1,18 +1,43 @@
 <h1>This is the contact index</h1>
 
 <h2>Contacts</h2>
-<% @contacts.each do |contact| %>
-  <p>
-    <strong>Name:</strong>
-    <%= contact.name %>
-  </p>
-
-  <p>
-    <strong>Birth day:</strong>
-    <%= contact.dayOfBirth %>
-  </p>
-
-<% end %>
+<table class="ui very basic collapsing celled table index-table">
+  <thead>
+    <tr><th>Name</th>
+    <th>Birth day</th>
+    <th>Address</th>
+    <th>Phone</th>
+    <th>Credit card</th>
+    <th>Franchise</th>
+    <th>Email</th>
+  </tr></thead>
+  <tbody>
+  <% @contacts.each do |contact| %>
+    <tr>
+      <td> 
+        <%= contact.name%>
+      </td>
+      <td>
+        <%=contact.dayOfBirth%>
+      </td>
+      <td>
+        <%=contact.address%>
+      </td>
+      <td>
+        <%= contact.phone %>
+      </td>
+      <td>
+        <%= contact.card %>
+      </td>
+      <td>
+        <%= contact.franchise %>
+      </td>
+      <td>
+        <%= contact.email %>
+      </td>
+    </tr>
+  <% end %>
+</table>
 
 <%= form_tag import_contacts_path, multipart: true, class: 'form-inline' do %>
 
@@ -25,3 +50,8 @@
   </div>
 
 <%end%>
+
+ <%= link_to contacts_path(format: :csv) do %>
+    <i class="big blue cloud download icon"></i>
+  <%end%>
+

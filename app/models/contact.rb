@@ -2,10 +2,10 @@ require 'csv'
 
 class Contact < ApplicationRecord
   belongs_to :user
-  belongs_to :contact_file
+  #belongs_to :contact_file
 
   validates :name, presence: true
-  validates :name, format: { with:  /\A[a-zA-Z0-9 -]+\z/ }
+  validates :name, format: { with:  /[A-Za-z0-9\-\s]/ }
   validates :address, presence: true
   validates :dayOfBirth, presence: true
   validates :card, presence: true
@@ -23,16 +23,43 @@ class Contact < ApplicationRecord
     end
   end
 
-  # validate :validate_card
-  # before_save :save_card
+  validate :valid_card
+  before_save :save_card 
 
+  def save_card
+    self.last_four_numbers = self.card[-4..-1]
+    self.franchise = valid_association
+  end
+  
   private
 
-  # def validate_credit_card
-  #   self[:card] = detect_franchise
-  #   self[:last_four_numbers] = take_last_four_credit_card_numbers
-  #   errors.add(:card, 'Invalid credit card') if franchise.nil?
-  # end
+  def valid_card
+    self[:card] = self[:card].gsub(/\D/, "")
+  
+    return false unless valid_association
+    self[:card].reverse!
+  
+    relative_number = {'0' => 0, '1' => 2, '2' => 4, '3' => 6, '4' => 8, '5' => 1, '6' => 3, '7' => 5, '8' => 7, '9' => 9}
+  
+    sum = 0 
+  
+    self[:card].split("").each_with_index do |n, i|
+      sum += (i % 2 == 0) ? n.to_i : relative_number[n]
+    end 
+  
+    sum % 10 == 0
+  end
+
+  def valid_association
+    number = self[:card].to_s.gsub(/\D/, "") 
+  
+    return 'dinners'  if self[:card].length == 14 && self[:card] =~ /^3(0[0-5]|[68])/   # 300xxx-305xxx, 36xxxx, 38xxxx
+    return 'amex'     if self[:card].length == 15 && self[:card] =~ /^3[47]/            # 34xxxx, 37xxxx
+    return 'visa'     if [13,16].include?(self[:card].length) && self[:card] =~ /^4/    # 4xxxxx
+    return 'master'   if self[:card].length == 16 && self[:card] =~ /^5[1-5]/           # 51xxxx-55xxxx
+    return 'discover' if self[:card].length == 16 && self[:card] =~ /^6011/             # 6011xx
+    return nil
+  end
 
 def self.to_csv
     attributes = %w{name dayOfBirth phone address card franchise email }

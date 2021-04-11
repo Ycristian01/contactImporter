@@ -37,12 +37,12 @@ class ContactsController < ApplicationController
   def create
     @contact = current_user.contacts.create(contact_params)
     
-    byebug
+    #byebug
     if @contact.save
       redirect_to contacts_path 
       flash[:notice] = "Contact was successfully created"
     else
-      render 'show'
+      render 'new'
     end
   end
 
