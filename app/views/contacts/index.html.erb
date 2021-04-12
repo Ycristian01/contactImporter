@@ -13,7 +13,7 @@
     <th>Actions</th>
   </tr></thead>
   <tbody>
-  <% @contacts.each do |contact| %>
+  <% @current_user_contacts.each do |contact| %>
     <tr>
       <td> 
         <%= contact.name%>
@@ -56,8 +56,6 @@
   </div>
 
 <%end%>
-
  <%= link_to contacts_path(format: :csv) do %>
     <i class="big blue cloud download icon"></i>
   <%end%>
-
