@@ -1,7 +1,6 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show edit update destroy ]
-  before_action :set_user, only: %i[ show edit update destroy ]
-
+  
   def index
     @contacts = Contact.all
 
@@ -58,7 +57,7 @@ class ContactsController < ApplicationController
   def destroy
     @contact.destroy
 
-    redirect_to user_path @user
+    redirect_to contacts_path 
     flash[:notice] = "contact was successfully destroyed." 
   end
 
@@ -68,12 +67,8 @@ class ContactsController < ApplicationController
       @contact = current_user.contacts.find(params[:id]) 
     end
 
-    def set_user
-      @user = User.find(params[:user_id])
-    end
-
     def contact_params
-      params.require(:contact).permit(:name, :dayOfBirth, :phone, :address, :card, :franchise, :email, :last_four_numbers) 
+      params.require(:contact).permit(:name, :dayOfBirth, :phone, :address, :card, :franchise, :email, :last_four_numbers, :encrypted_card_number) 
     end
 
 end

@@ -10,6 +10,7 @@
     <th>Credit card</th>
     <th>Franchise</th>
     <th>Email</th>
+    <th>Actions</th>
   </tr></thead>
   <tbody>
   <% @contacts.each do |contact| %>
@@ -34,6 +35,11 @@
       </td>
       <td>
         <%= contact.email %>
+      </td>
+       <td>
+        <%= link_to contact, method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <i class="large red trash icon"></i>
+        <% end %>
       </td>
     </tr>
   <% end %>
