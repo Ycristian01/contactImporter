@@ -1,6 +1,6 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show edit update destroy ]
-  before_action :set_contact_file, only: %i[ show edit update destroy ]
+  before_action :set_user, only: %i[ show edit update destroy ]
 
   def index
     @contacts = Contact.all
@@ -12,12 +12,12 @@ class ContactsController < ApplicationController
   end
 
   def import 
-    Contact.import(params[:file])
-    redirect_to root_url, notice: "contacts imported"
+    current_user.contacts.import(params[:file])
+    redirect_to contacts_path, notice: "contacts imported"
   end
 
   def export_csv
-    contact_csv = Contact.find_by_sql("select * from contact_list limit 10")
+    contact_csv = current_user.contacts.find_by_sql("select * from contact_list limit 10")
     respond_to do |format|
       format.html
       format.csv { send_data contact_csv.as_csv }
@@ -69,11 +69,11 @@ class ContactsController < ApplicationController
     end
 
     def set_user
-      @contact_file = ContactFile.find(params[:contact_file_id])
+      @user = User.find(params[:user_id])
     end
 
     def contact_params
-      params.require(:contact).permit(:name, :dayOfBirth, :phone, :address, :card, :franchise, :email) 
+      params.require(:contact).permit(:name, :dayOfBirth, :phone, :address, :card, :franchise, :email, :last_four_numbers) 
     end
 
 end
