@@ -12,9 +12,9 @@
   <% @failed_contacts.each do |contact| %>
     <tr>
       <th scope="row"><%= contact.id %></th>
-      <td><%= contact.name if contact.name%></td>
-      <td><%= contact.contact_errors if contact.contact_errors %></td>
-      <td><%= contact.file_contact.name if contact.file_contact %></td>
+      <td><%= contact.name%></td>
+      <td><%= contact.contact_errors %></td>
+      <td><%= FileContact.find(contact.file_contact.id).name  %></td>
     </tr>
   <% end %>
   </tbody>

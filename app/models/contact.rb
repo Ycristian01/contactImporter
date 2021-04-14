@@ -89,13 +89,14 @@ class Contact < ApplicationRecord
     
       if contact_hash.save
       else
+        contact_errors = contact_hash.errors.full_messages.join(',')
         failed_contact = FailedContact.new(name: file_hash[file_hash.keys[contact_params['name'].to_i]],
           dayOfBirth: file_hash[file_hash.keys[contact_params['dayOfBirth'].to_i]],
           phone: file_hash[file_hash.keys[contact_params['phone'].to_i]],
           address: file_hash[file_hash.keys[contact_params['address'].to_i]],
           card: file_hash[file_hash.keys[contact_params['card'].to_i]],
           email: file_hash[file_hash.keys[contact_params['email'].to_i]],
-          file_contact_id: file_contact.id)
+          file_contact_id: file_contact.id, contact_errors: contact_errors)
         failed_contact.save!
       end
 

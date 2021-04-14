@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_14_171855) do
+ActiveRecord::Schema.define(version: 2021_04_14_195520) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "name"
-    t.string "dayOfBirth"
+    t.date "dayOfBirth"
     t.string "phone"
     t.string "address"
     t.string "card"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2021_04_14_171855) do
 
   create_table "failed_contacts", force: :cascade do |t|
     t.string "name"
-    t.string "dayOfBirth"
+    t.date "dayOfBirth"
     t.string "phone"
     t.string "address"
     t.string "card"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_04_14_171855) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "file_contact_id", null: false
+    t.string "contact_errors"
     t.index ["file_contact_id"], name: "index_failed_contacts_on_file_contact_id"
   end
 

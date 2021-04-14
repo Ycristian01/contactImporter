@@ -42,7 +42,7 @@ class ContactsController < ApplicationController
 
   def failed
     if current_user
-      @failed_contacts = FileContact.all
+      @failed_contacts = FailedContact.all
     else
       redirect_to contacts_path
     end
