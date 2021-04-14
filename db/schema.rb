@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_12_233136) do
+ActiveRecord::Schema.define(version: 2021_04_14_171855) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "name"
@@ -34,16 +34,16 @@ ActiveRecord::Schema.define(version: 2021_04_12_233136) do
   create_table "failed_contacts", force: :cascade do |t|
     t.string "name"
     t.string "dayOfBirth"
-    t.integer "phone"
+    t.string "phone"
     t.string "address"
     t.string "card"
     t.string "franchise"
     t.string "email"
     t.string "last_four_numbers"
-    t.integer "contact_file_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["contact_file_id"], name: "index_failed_contacts_on_contact_file_id"
+    t.integer "file_contact_id", null: false
+    t.index ["file_contact_id"], name: "index_failed_contacts_on_file_contact_id"
   end
 
   create_table "file_contacts", force: :cascade do |t|
@@ -67,5 +67,5 @@ ActiveRecord::Schema.define(version: 2021_04_12_233136) do
 
   add_foreign_key "contacts", "file_contacts"
   add_foreign_key "contacts", "users"
-  add_foreign_key "failed_contacts", "contact_files"
+  add_foreign_key "failed_contacts", "file_contacts"
 end

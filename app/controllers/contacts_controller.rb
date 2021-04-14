@@ -10,10 +10,6 @@ class ContactsController < ApplicationController
     end
   end
 
-  # def import
-    
-  # end
-
   def export_csv
     contact_csv = current_user.contacts.find_by_sql("select * from contact_list limit 10")
     respond_to do |format|
@@ -46,7 +42,7 @@ class ContactsController < ApplicationController
 
   def failed
     if current_user
-      @failed_contacts = Contact.where(user_id: current_user.id, valid_contact: false)
+      @failed_contacts = FileContact.all
     else
       redirect_to contacts_path
     end
