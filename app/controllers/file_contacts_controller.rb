@@ -1,5 +1,9 @@
 class FileContactsController < ApplicationController
   def index
-    @file_contact = FileContact.all
+    if current_user
+      @file_contacts = FileContact.all
+    else
+      redirect_to users_path
+    end
   end
 end

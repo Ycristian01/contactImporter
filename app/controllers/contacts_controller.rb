@@ -10,17 +10,9 @@ class ContactsController < ApplicationController
     end
   end
 
-  def import
-    @file_contact = FileContact.new
-    @file_contact.name = "contacts -#{Date.today}.csv"
-    @file_contact.status = "Loading"
-    @file_contact.save!
-    @contact = current_user.contacts.create(contact_params)
-    current_user.contacts.import(params[:file], current_user, @file_contact)
-    flash[:notice] = "Contacts uploaded successfully"
-    redirect_to contacts_path
+  # def import
     
-  end
+  # end
 
   def export_csv
     contact_csv = current_user.contacts.find_by_sql("select * from contact_list limit 10")
@@ -41,6 +33,14 @@ class ContactsController < ApplicationController
   end
 
   def create
+    @file_contact = FileContact.new
+    @file_contact.name = params[:contact][:file].original_filename
+    @file_contact.status = "Loading"
+    @file_contact.save!
+    @contact = current_user.contacts.create(contact_params)
+    current_user.contacts.import(params[:contact][:file], current_user, contact_params.to_hash, @file_contact)
+    flash[:notice] = "Contacts uploaded successfully"
+    redirect_to contacts_path
     
   end
 
@@ -75,7 +75,7 @@ class ContactsController < ApplicationController
     end
 
     def contact_params
-      params.permit(:name, :dayOfBirth, :phone, :address, :card, :email, :franchise)
+      params.permit(:name, :dayOfBirth, :phone, :address, :card, :email)
     end
 
 end

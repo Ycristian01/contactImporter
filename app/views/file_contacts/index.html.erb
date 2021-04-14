@@ -1,0 +1,19 @@
+<h1>List of imported files</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @file_contacts.each do |file| %>
+    <tr>
+      <th scope="row"><%= file.id %></th>
+      <td><%= file.name if file.name%></td>
+      <td><%= file.status if file.status %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
