@@ -37,18 +37,18 @@ class Contact < ApplicationRecord
       contact_errors = []
       contact_hash = Contact.new
       file_hash = row.to_hash
-      byebug
       contact_hash.file_contact_id = file_contact.id
 
       file_contact.status = "Processing"
       contact_hash.user_id = user.id
-      name_ = file_hash['name']
+      #name_ = file_hash['name']
+      name_ = file_hash[file_hash.keys[contact_params['name'].to_i]]
       if name_
         contact_hash.name = name_
       else 
         contact_errors.push("Name empty")
       end
-      date_ = file_hash['dayOfBirth']
+      date_ = file_hash[file_hash.keys[contact_params['dayOfBirth'].to_i]]
       if date_
         if date_.include? "-"
           dayOfBirth =  Date.strptime(date_.to_s, '%F')
@@ -61,7 +61,7 @@ class Contact < ApplicationRecord
       else
         contact_errors.push("Date empty")
       end
-      phone_ = file_hash['phone']
+      phone_ = file_hash[file_hash.keys[contact_params['phone'].to_i]]
       if phone_
         if !phone_.match(/\(\+\d{1,2}\)\s\d{3}\s\d{3}\s\d{2}\s\d{2}/).nil? || !phone_.match(/\(\+\d{1,2}\)\s\d{3}\-\d{3}\-\d{2}\-\d{2}/).nil?
           contact_hash.phone = phone_
@@ -72,14 +72,14 @@ class Contact < ApplicationRecord
         contact_errors.push("Phone field empty")
       end
 
-      address_ = file_hash['address']
+      address_ = file_hash[file_hash.keys[contact_params['address'].to_i]]
       if address_
         contact_hash.address = address_
       else
         errors.push("Address field empty")
       end
 
-      card_ = file_hash['card'].to_s
+      card_ = file_hash[file_hash.keys[contact_params['card'].to_i]]
       if card_.length == 14 && card_ =~ /^3(0[0-5]|[68])/   # 300xxx-305xxx, 36xxxx, 38xxxx
         franchise_= 'Dinners'
       elsif card_.length == 15 && card_ =~ /^3[47]/            # 34xxxx, 37xxxx
@@ -103,7 +103,7 @@ class Contact < ApplicationRecord
         contact_hash.last_four_numbers = card_[-4..-1]
       end
 
-      email = file_hash['email']
+      email = file_hash[file_hash.keys[contact_params['email'].to_i]]
       if email
         unless email =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
             contact_errors.push("It is not a valid email")
