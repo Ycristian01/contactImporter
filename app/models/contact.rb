@@ -6,10 +6,11 @@ class Contact < ApplicationRecord
   belongs_to :file_contact
 
   validates :name, presence: true
-  validates :name, format: { with:  /\A[A-Za-z\-\s]*\z/ }
+  validates :name, format: { with:  /\A[A-Za-z0-9\-\s]*\z/ }
   validates :address, presence: true
   validates :dayOfBirth, presence: true
   validates :card, presence: true
+  validates :email, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :phone, format: { with: /\(([+][0-9]{1,2})\)([ .-]?)([0-9]{3})(\s|-)([0-9]{3})(\s|-)([0-9]{2})(\s|-)([0-9]{2})/, message: 'Invalid phone number' }, presence: true
   validates :card, numericality: { only_integer: true,
