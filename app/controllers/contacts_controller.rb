@@ -3,7 +3,7 @@ class ContactsController < ApplicationController
   
   def index
     @contacts = Contact.all
-    @current_user_contacts = current_user.contacts.all
+    @current_user_contacts = current_user.contacts.all.paginate(page: params[:page], per_page: 10)
     respond_to do |format|
       format.html
       format.csv { send_data @contacts.to_csv, filename: "contacts -#{Date.today}.csv" }
@@ -37,7 +37,7 @@ class ContactsController < ApplicationController
 
   def failed
     if current_user
-      @failed_contacts = FailedContact.all
+      @failed_contacts = FailedContact.all.paginate(page: params[:page], per_page: 10)
     else
       redirect_to contacts_path
     end

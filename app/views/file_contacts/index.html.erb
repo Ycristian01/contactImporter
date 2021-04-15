@@ -1,21 +1,41 @@
-<h1>List of imported files</h1>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Status</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @file_contacts.each do |file| %>
-    <tr>
-      <th scope="row"><%= file.id %></th>
-      <td><%= file.name if file.name%></td>
-      <td><%= file.status if file.status %></td>
-      <td><%=link_to "import", import_file_contacts_path(id: file), method: :post%></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<h1 class="index-title">List of imported files</h1>
+<div class="ui centered grid">
+  <table class="ui very basic collapsing celled table index-table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @file_contacts.each do |file| %>
+      <tr> 
+
+        <th scope="row"><%= file.id %></th>
+        <td><%= file.name if file.name%></td>
+        <td><%= file.status if file.status %></td>
+        
+        <td>
+          <% if file.status=="Standby" %>
+            <%=link_to import_file_contacts_path(id: file), method: :post do%>
+              <i class="big blue cloud upload icon"></i>
+            <% end %>
+            <%else%>
+              <i class="big gray cloud upload icon"></i>
+          <% end %>
+
+          <%= link_to file, method: :delete, data: { confirm: 'Are you sure?' } do %>
+            <i class="big red trash icon"></i>
+          <% end %>
+        </td>
+        
+        
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= will_paginate @file_contacts %>

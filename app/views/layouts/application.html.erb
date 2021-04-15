@@ -11,7 +11,22 @@
   </head>
 
   <body>
-  
+    <div class="ui secondary  menu">
+      <a class="item">
+        <%=link_to 'Contacts list', contacts_path, method: :get %>
+      </a>
+      <a class="item">
+         <%=link_to 'Imported files list', file_contacts_path, method: :get %>
+      </a>
+      <a class="item">
+        <%=link_to 'Failed files list', failed_contacts_path, method: :get %>
+      </a>
+      <div class="right menu">
+        <a class="ui item">
+          <%=link_to 'Log out', destroy_user_session_path, method: :delete %>
+        </a>
+      </div>
+    </div>
     <% if notice %>
       <p class="alert alert-success"><%= notice %></p>
     <% end %>

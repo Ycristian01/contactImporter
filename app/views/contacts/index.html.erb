@@ -1,54 +1,71 @@
-<h1>This is the contact index</h1>
+<h1 class="index-title">Contacts</h1>
+<div class="ui centered grid">
+  <table class="ui very basic collapsing celled table index-table">
+    <thead>
+      <tr><th>Name</th>
+      <th>Birth day</th>
+      <th>Address</th>
+      <th>Phone</th>
+      <th>Credit card</th>
+      <th>Franchise</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr></thead>
+    <tbody>
+    <% @current_user_contacts.each do |contact| %>
+      <tr>
+        <td> 
+          <%= contact.name%>
+        </td>
+        <td>
+          <%=contact.dayOfBirth.to_date.strftime("%Y %B %d")%>
+        </td>
+        <td>
+          <%=contact.address%>
+        </td>
+        <td>
+          <%= contact.phone %>
+        </td>
+        <td>
+          <%= contact.last_four_numbers %>
+        </td>
+        <td>
+          <%= contact.franchise %>
+        </td>
+        <td>
+          <%= contact.email %>
+        </td>
+        <td>
+          <%= link_to contact, method: :delete, data: { confirm: 'Are you sure?' } do %>
+            <i class="large red trash icon"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
 
-<h2>Contacts</h2>
-<table class="ui very basic collapsing celled table index-table">
-  <thead>
-    <tr><th>Name</th>
-    <th>Birth day</th>
-    <th>Address</th>
-    <th>Phone</th>
-    <th>Credit card</th>
-    <th>Franchise</th>
-    <th>Email</th>
-    <th>Actions</th>
-  </tr></thead>
-  <tbody>
-  <% @current_user_contacts.each do |contact| %>
-    <tr>
-      <td> 
-        <%= contact.name%>
-      </td>
-      <td>
-        <%=contact.dayOfBirth.to_date.strftime("%Y %B %d")%>
-      </td>
-      <td>
-        <%=contact.address%>
-      </td>
-      <td>
-        <%= contact.phone %>
-      </td>
-      <td>
-        <%= contact.last_four_numbers %>
-      </td>
-      <td>
-        <%= contact.franchise %>
-      </td>
-      <td>
-        <%= contact.email %>
-      </td>
-       <td>
-        <%= link_to contact, method: :delete, data: { confirm: 'Are you sure?' } do %>
-          <i class="large red trash icon"></i>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<div class="ui centered grid">
+  <div class="two wide column">
+    <%=link_to file_contacts_path,  method: :get do %>
+      <i class="big teal database icon"></i>
+    <%end%>
+  </div>
+  <div class="two wide column">
+    <%= link_to failed_contacts_path do %>
+      <i class="big red file excel icon"></i>
+    <%end%>
+  </div>
+  <div class="two wide column">
+    <%= link_to new_file_contact_path do %>
+      <i class="big green file alternate icon"></i>
+    <%end%>
+  </div>
+  <div class="two wide column">
+    <%= link_to contacts_path(format: :csv) do %>
+      <i class="big blue cloud download icon"></i>
+    <%end%>
+  </div>
+</div>
 
-<%=link_to "Imported files", file_contacts_path,  method: :get %>
-<%=link_to "Failed files", failed_contacts_path,  method: :get %>
-<%=link_to "Add new file", new_file_contact_path,  method: :get %>
-
- <%= link_to contacts_path(format: :csv) do %>
-    <i class="big blue cloud download icon"></i>
-  <%end%>
+<%= will_paginate @current_user_contacts %>

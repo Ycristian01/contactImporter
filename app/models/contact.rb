@@ -3,7 +3,7 @@ require 'bcrypt'
 
 class Contact < ApplicationRecord
   belongs_to :user
-  belongs_to :file_contact, class_name: 'FileContact', foreign_key: 'file_contact_id', optional: true
+  belongs_to :file_contact
 
   validates :name, presence: true
   validates :name, format: { with:  /\A[A-Za-z\-\s]*\z/ }
@@ -78,6 +78,7 @@ class Contact < ApplicationRecord
       contact_errors = []
       file_hash = row.to_hash
       
+      file_contact.status = "Processing"
       contact_hash = Contact.new(name: file_hash[file_hash.keys[file_contact_params['name'].to_i]],
       dayOfBirth: file_hash[file_hash.keys[file_contact_params['dayOfBirth'].to_i]],
       phone: file_hash[file_hash.keys[file_contact_params['phone'].to_i]],
