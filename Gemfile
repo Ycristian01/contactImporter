@@ -61,9 +61,9 @@ group :test do
   gem 'sqlite3', '~> 1.4'
 end
 
-# group :production do
-#   gem 'pg'
-# end
+group :production do
+  gem 'pg'
+end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
