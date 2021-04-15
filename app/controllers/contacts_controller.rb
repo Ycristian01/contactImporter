@@ -28,12 +28,7 @@ class ContactsController < ApplicationController
   def edit
   end
 
-  def create
-    @file_contact = FileContact.new
-    @file_contact.name = params[:contact][:file].original_filename
-    @file_contact.status = "Loading"
-    @file_contact.save!
-    @contact = current_user.contacts.create(contact_params)
+  def create 
     current_user.contacts.import(params[:contact][:file], current_user, contact_params.to_hash, @file_contact)
     flash[:notice] = "Contacts uploaded successfully"
     redirect_to contacts_path

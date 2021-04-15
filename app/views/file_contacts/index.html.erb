@@ -14,7 +14,7 @@
       <th scope="row"><%= file.id %></th>
       <td><%= file.name if file.name%></td>
       <td><%= file.status if file.status %></td>
-      
+      <td><%=link_to "import", import_file_contacts_path(id: file), method: :post%></td>
     </tr>
   <% end %>
   </tbody>

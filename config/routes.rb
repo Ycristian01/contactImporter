@@ -3,9 +3,10 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :users
-  resources :contacts #do
-  #   collection { post :import }
-  # end
-  resources :file_contacts
+  resources :contacts
+  
+  resources :file_contacts do
+    collection { post :import }
+  end
   get '/failed_contacts' => 'contacts#failed'
 end

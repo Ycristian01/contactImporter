@@ -32,7 +32,6 @@ class Contact < ApplicationRecord
   private
 
   def valid_card()
-    byebug
     number = self.card.gsub(/\D/, "")
     return false unless valid_association
     number.reverse!
@@ -72,39 +71,43 @@ class Contact < ApplicationRecord
 
   end
 
-  def self.import(file, user, contact_params, file_contact)
+  def self.import(file, file_contact_params, file_contact, user)
     failed= 0
-    CSV.foreach(file.path, headers: true) do |row|
+    cont_ = 0
+    CSV.foreach(ActiveStorage::Blob.service.send(:path_for, file_contact.file.key), headers: true) do |row|
       contact_errors = []
       file_hash = row.to_hash
-      contact_hash = Contact.new(name: file_hash[file_hash.keys[contact_params['name'].to_i]],
-      dayOfBirth: file_hash[file_hash.keys[contact_params['dayOfBirth'].to_i]],
-      phone: file_hash[file_hash.keys[contact_params['phone'].to_i]],
-      address: file_hash[file_hash.keys[contact_params['address'].to_i]],
-      card: file_hash[file_hash.keys[contact_params['card'].to_i]],
-      email: file_hash[file_hash.keys[contact_params['email'].to_i]], user_id: user.id,
+      
+      contact_hash = Contact.new(name: file_hash[file_hash.keys[file_contact_params['name'].to_i]],
+      dayOfBirth: file_hash[file_hash.keys[file_contact_params['dayOfBirth'].to_i]],
+      phone: file_hash[file_hash.keys[file_contact_params['phone'].to_i]],
+      address: file_hash[file_hash.keys[file_contact_params['address'].to_i]],
+      card: file_hash[file_hash.keys[file_contact_params['card'].to_i]],
+      email: file_hash[file_hash.keys[file_contact_params['email'].to_i]], user_id: user.id,
       file_contact_id: file_contact.id)
       
-      file_contact.status = "Processing"
-    
+      
       if contact_hash.save
+        contact_hash.valid_contact = true
       else
         contact_errors = contact_hash.errors.full_messages.join(',')
-        failed_contact = FailedContact.new(name: file_hash[file_hash.keys[contact_params['name'].to_i]],
-          dayOfBirth: file_hash[file_hash.keys[contact_params['dayOfBirth'].to_i]],
-          phone: file_hash[file_hash.keys[contact_params['phone'].to_i]],
-          address: file_hash[file_hash.keys[contact_params['address'].to_i]],
-          card: file_hash[file_hash.keys[contact_params['card'].to_i]],
-          email: file_hash[file_hash.keys[contact_params['email'].to_i]],
+        failed_contact = FailedContact.new(name: file_hash[file_hash.keys[file_contact_params['name'].to_i]],
+          dayOfBirth: file_hash[file_hash.keys[file_contact_params['dayOfBirth'].to_i]],
+          phone: file_hash[file_hash.keys[file_contact_params['phone'].to_i]],
+          address: file_hash[file_hash.keys[file_contact_params['address'].to_i]],
+          card: file_hash[file_hash.keys[file_contact_params['card'].to_i]],
+          email: file_hash[file_hash.keys[file_contact_params['email'].to_i]],
           file_contact_id: file_contact.id, contact_errors: contact_errors)
         failed_contact.save!
+        failed += 1
+        
       end
 
-      byebug
+      cont_ = cont_+1
 
-      if failed == CSV.foreach(file.path, headers: true).count
+      if failed == CSV.foreach(ActiveStorage::Blob.service.send(:path_for, file_contact.file.key), headers: true).count
         file_contact.status = "Failed"
-      elsif failed < CSV.foreach(file.path, headers: true).count
+      elsif failed < CSV.foreach(ActiveStorage::Blob.service.send(:path_for, file_contact.file.key), headers: true).count && cont_ == CSV.foreach(ActiveStorage::Blob.service.send(:path_for, file_contact.file.key), headers: true).count
         file_contact.status = "Finished"
       end
         
