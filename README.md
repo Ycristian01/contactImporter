@@ -1,24 +1,31 @@
-# README
+# Contact importer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application allow a user to import a list of contacts in a database. The contact fields are:
 
-Things you may want to cover:
+* Name
 
-* Ruby version
+* Date of birth
 
-* System dependencies
+* Phone number
 
-* Configuration
+* Credit card number
 
-* Database creation
+* Franchise
 
-* Database initialization
+* Email
 
-* How to run the test suite
+The app allows to:
 
-* Services (job queues, cache servers, search engines, etc.)
+* Create a user with email and password
 
-* Deployment instructions
+* Load a csv file
 
-* ...
+* If the columns names or the columns positions are not the same that the standar (name,dayOfBirth,phone,card,email) the user can select the position of each column after load the csv file.
+
+* The user can check the list of imported csv files anytime and then import the contacts of each csv in the list of the user contacts in the database.
+
+* If the import fails the user can see the errors of each contact and the name of the correspondent csv file
+
+* The user can delete any contact in his database
+
+* The user can export the list of imported contacts
